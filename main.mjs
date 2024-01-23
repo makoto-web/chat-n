@@ -2,6 +2,7 @@ import fs from "node:fs";
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import escapeHTML from "escape-html";
+var now = new Date();
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -13,7 +14,7 @@ app.get("/", async (request, response) => {
   const posts = await prisma.post.findMany();
   const html = template.replace(
     "<!-- posts -->",
-    posts.map((post) => `<li>${escapeHTML(post.message)}</li>`).join(""),
+    posts.map((post) => `<li>${escapeHTML(post.message)} ${now}</li>`).join(""),
   );
   response.send(html);
 });
